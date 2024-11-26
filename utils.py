@@ -176,4 +176,24 @@ def load_Data(config):
     for key, value in datasets.items():
         if value:
             build_dataset(key)
+
+def map_state_dict(target_state_dict, source_state_dict):
+    mapped_state_dict = {'src_to_tgt': {}, 'tgt_to_src': {}}
+    for key, value in target_state_dict.items():
+        names = key.split('.')
+        matched = True
+        for name in names:
+            if not matched:
+                break
+            matched = False
+            for skey, svalue in source_state_dict.items():
+                tkeys = skey.split('.')
+                if name in tkeys:
+                    matched = True
+                    break
+
+        if matched and source_state_dict[skey].shape == value.shape:
+            mapped_state_dict['src_to_tgt'][skey] = key
+            mapped_state_dict['tgt_to_src'][key] = skey
+    return mapped_state_dict
     

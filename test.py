@@ -8,27 +8,53 @@ import utils
 from models.LSTM import LSTM
 import numpy as np
 from pathlib import Path
+import sys
+
+sys.path.append('neuralhydrology')
+from neuralhydrology.nh_run import start_run
+
+
+
+
+
+
+
+
 
 
 # from neuralhydrology.neuralhydrology.nh_run import start_run
 
 # start_run(config_file=Path("configs/LSTM.yml"), gpu=0)
 
-from neuralhydrology.nh_run import start_run, eval_run
+# from neuralhydrology.nh_run import start_run, eval_run
 
 
-model = LSTM(4, 256)
-
-# torch.save(model.state_dict(), 'runs/LSTM_test.pt')
-
+# model = LSTM(4, 256)
 
 # myStateDict = torch.load('runs/LSTM_test.pt', weights_only=False)
-# model.load_state_dict(ret)
-theirStateDict = torch.load('runs/all_data_caravan_one_layer_1411_165612/model_epoch001.pt', weights_only=False)
+# print(myStateDict.keys())
 
-model.load_state_dict(theirStateDict)
+# theirStateDict = torch.load('runs/all_data_caravan_one_layer_1411_165612/model_epoch001.pt', weights_only=False)
+# print(theirStateDict.keys())
 
-print('success')
+# print(theirStateDict['embedding_net.statics_embedding.net.0.bias'])
+# print(myStateDict['embedding_net.bias'])
+
+# dictmap = utils.map_state_dict(myStateDict, theirStateDict)
+
+
+# print(dictmap['src_to_tgt'])
+# print(dictmap['tgt_to_src'])
+
+
+# print(theirStateDict['embedding_net.statics_embedding.net.0.bias'])
+# print(myStateDict['embedding_net.bias'])
+
+
+# model.load_state_dict(myStateDict)
+# model.load_state_dict(theirStateDict)
+
+# print('success')
 
 # my_items = myStateDict.items()
 # their_items = theirStateDict.items()

@@ -1,10 +1,40 @@
 import pandas as pd
 import torch
 from utils import series_to_samples, get_files, clean_series
+import sys
+from pathlib import Path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from neuralhydrology.neuralhydrology.nh_run import start_run, eval_run
 
 # files, dirs = get_files('data/Caravan/timeseries/csv')
 # print(files[:10])
-df = pd.read_csv('data/Caravan/timeseries/csv/camelsaus/camelsaus_G8200045.csv')
+# df = pd.read_csv('data/Caravan/timeseries/csv/camelsaus/camelsaus_G8200045.csv')
 
 # a, b = series_to_samples(df, 4)
 # print(a.shape)
