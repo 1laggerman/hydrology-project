@@ -10,8 +10,16 @@ import numpy as np
 from pathlib import Path
 import sys
 
-sys.path.append('neuralhydrology')
-from neuralhydrology.nh_run import start_run
+from neuralhydrology.nh_run import Config
+from neuralhydrology.modelzoo import get_model
+
+# run from "for work" directory?
+
+# print(Path("hydrology-project/configs/LSTM.yml").absolute())
+cfg = Config(Path("hydrology-project/configs/LSTM.yml"))
+model = get_model(cfg=cfg)
+
+print(model.state_dict())
 
 
 
