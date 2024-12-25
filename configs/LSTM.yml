@@ -111,7 +111,7 @@ save_validation_results: False
 dataset: caravan
 
 # Path to CAMELS data set
-data_dir: ../data/Caravan
+data_dir: ../../data/Caravan
 
 # Forcing product [daymet, maurer, maurer_extended, nldas, nldas_extended]
 # can be either a list of forcings or a single forcing product
