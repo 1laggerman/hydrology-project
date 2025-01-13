@@ -1,0 +1,8 @@
+Datasets:
+  camels: True # True | False | {*choose sub-files*}
+  camelsaus: True # True | False | {*choose sub-files*}
+  camelsbr: True # True | False | {*choose sub-files*}
+  camelscl: True # True | False | {*choose sub-files*}
+  camelsgb: True # True | False | {*choose sub-files*}
+  hysets: True # True | False | {*choose sub-files*}
+  lamah: True # True | False | {*choose sub-files*}

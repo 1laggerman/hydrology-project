@@ -3,7 +3,10 @@ import pandas as pd
 import yaml
 import torch
 
-import utils
+
+from utils.configs import build_basins_config, build_attr_config
+# from utils.configs import test_yaml
+# from utils.configs import load_config
 
 from models.LSTM import LSTM
 import numpy as np
@@ -12,14 +15,29 @@ import sys
 
 from nhWrap.neuralhydrology.neuralhydrology.nh_run import Config
 from nhWrap.neuralhydrology.neuralhydrology.nh_run import start_run
+from nhWrap.neuralhydrology.neuralhydrology.modelzoo import get_model
 
+build_basins_config('../data/Caravan', 'configs')
+# data_conf = yaml.safe_load(Path('configs', 'basins_1.yaml').read_text())
+
+# print(data_conf)
+
+# foo = {
+#     'name': 'foo',
+#     'my_list': [
+#         {'foo': 'test', 'bar': 'test2'},
+#         {'foo': 'test3', 'bar': 'test4'}],
+#     'hello': 'world',
+# }
+
+# test_yaml()
 
 
 # run from "for work" directory?
 
 # print(Path("hydrology-project/configs/LSTM.yml").absolute())
 # cfg = Config(Path("configs/LSTM.yml"))
-start_run(Path('configs/LSTM.yml'), gpu=0)
+# start_run(Path('configs/LSTM.yml'), gpu=0)
 # model = get_model(cfg=cfg)
 
 # print(model.state_dict())
