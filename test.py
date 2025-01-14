@@ -17,7 +17,8 @@ from nhWrap.neuralhydrology.neuralhydrology.nh_run import Config
 from nhWrap.neuralhydrology.neuralhydrology.nh_run import start_run
 from nhWrap.neuralhydrology.neuralhydrology.modelzoo import get_model
 
-build_basins_config('../data/Caravan', 'configs')
+# build_basins_config('../data/Caravan', 'configs')
+build_attr_config('../data/Caravan', 'configs')
 # data_conf = yaml.safe_load(Path('configs', 'basins_1.yaml').read_text())
 
 # print(data_conf)

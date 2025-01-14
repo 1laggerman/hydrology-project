@@ -12,54 +12,102 @@ def build_basins_config(src_path, dst_path):
         basins[directory] = []
         for file in os.listdir(os.path.join(root_dir, directory)):
             if file.endswith(".csv"):
-                basins[directory].append(file)
+                basins[directory].append(file[:-4])
 
     save_config(dst_path, 'basins', basins)
 
-
-
 def build_attr_config(src_path, dst_path):
 
-    files, _ = get_files(os.path.join(src_path, 'timeseries', 'csv', 'camels'), extension='.csv')
-    sampleBaseFile = files[0]
+    attr = {'ALL_KEYS': {'per_gauge': ['gauge_id', 'gauge_name', 'country'], 'per_sample': ['date']}, 'STATIC_ATTRIBUTES': {}, 'DYNAMIC_ATTRIBUTES': {}}
 
-    files, _ = get_files(os.path.join(src_path, 'attributes', 'camels'), extension='.csv')
+    dynamic_path = os.path.join(src_path, 'timeseries', 'csv')
+    static_path = os.path.join(src_path, 'attributes')
 
-    attr = {
-        'BASE_ATTRIBUTES': {
-            'sample_path': sampleBaseFile,
-            'SIZE': 0,
-            'KEYS': ['date'],
-            'names': []
-        },
-        'CAMELS_ATTRIBUTES': {
-            'sample_path': next((s for s in files if 'caravan' in s)),
-            'SIZE': 0,
-            'KEYS': ['gauge_id'],
-            'names': [],
-        },
-        'HYDROATLAS_ATTRIBUTES': {
-            'sample_path': next((s for s in files if 'hydroatlas' in s)),
-            'SIZE': 0,
-            'KEYS': ['gauge_id'],
-            'names': [],
-        },
-        'OTHER_ATTRIBUTES': {
-            'sample_path': next((s for s in files if 'other' in s)),
-            'SIZE': 0,
-            'KEYS': ['gauge_id', 'gauge_name', 'country'],
-            'names': [],
-        }
-    }
 
-    for key, value in attr.items():
-        df = pd.read_csv(value['sample_path'])
-        df.drop(value['KEYS'], axis=1, inplace=True)
+    sample_path = os.path.join(static_path, 'camels')
+    for file in os.listdir(sample_path):
+        if file.endswith(".csv"):
+            parts = file.split('_')
+            attr['STATIC_ATTRIBUTES'][parts[-2]] = {'sample_path': os.path.join('attributes', 'camels', file), 'SIZE': 0, 'KEYS': [], 'names': []}
+
+    sample_path = os.path.join(dynamic_path, 'camels')
+    file = os.listdir(sample_path)[0]
+    if file.endswith(".csv"):
+        parts = file.split('_')
+        attr['DYNAMIC_ATTRIBUTES'] = {'sample_path': os.path.join('timeseries', 'csv', 'camels', file), 'SIZE': 0, 'KEYS': [], 'names': []}
+        
+
+    # files, _ = get_files(os.path.join(src_path, 'timeseries', 'csv', 'camels'), extension='.csv')
+    # sampleBaseFile = files[0]
+
+    # files, _ = get_files(os.path.join(src_path, 'attributes', 'camels'), extension='.csv')
+
+    # attr = {
+    #     'BASE_ATTRIBUTES': {
+    #         'sample_path': sampleBaseFile,
+    #         'SIZE': 0,
+    #         'KEYS': ['date'],
+    #         'names': []
+    #     },
+    #     'CARAVAN_ATTRIBUTES': {
+    #         'sample_path': next((s for s in files if 'caravan' in s)),
+    #         'SIZE': 0,
+    #         'KEYS': ['gauge_id'],
+    #         'names': [],
+    #     },
+    #     'HYDROATLAS_ATTRIBUTES': {
+    #         'sample_path': next((s for s in files if 'hydroatlas' in s)),
+    #         'SIZE': 0,
+    #         'KEYS': ['gauge_id'],
+    #         'names': [],
+    #     },
+    #     'OTHER_ATTRIBUTES': {
+    #         'sample_path': next((s for s in files if 'other' in s)),
+    #         'SIZE': 0,
+    #         'KEYS': ['gauge_id', 'gauge_name', 'country'],
+    #         'names': [],
+    #     }
+    # }
+
+    for key, value in attr['STATIC_ATTRIBUTES'].items():
+
+        df = pd.read_csv(os.path.join(src_path, value['sample_path']))
+
         names = df.columns.to_list()
-        value['names'] = names
-        value['SIZE'] = len(names)
+        keys = []
 
-    # yaml.safe_dump(meta, open(dst_path, 'w'), sort_keys=False)
+        for key in attr['ALL_KEYS']['per_gauge']:
+            try: 
+                names.remove(key)
+                keys.append(key)
+            except ValueError:
+                pass
+
+        value['KEYS'] = keys
+        value['SIZE'] = len(names)
+        value['names'] = names
+
+    key = 'DYNAMIC_ATTRIBUTES'
+    value = attr[key]
+
+    df = pd.read_csv(os.path.join(src_path, value['sample_path']))
+
+    names = df.columns.to_list()
+    keys = []
+
+    for key in attr['ALL_KEYS']['per_sample']:
+        try: 
+            names.remove(key)
+            keys.append(key)
+        except ValueError:
+            pass
+
+    value['KEYS'] = keys
+    value['SIZE'] = len(names)
+    value['names'] = names
+
+
+    # print(attr)
     save_config(dst_path, 'attributes', attr)
 
     return attr
@@ -76,19 +124,6 @@ def load_config(path):
     run_conf.update(model_conf)
 
     return run_conf
-
-# class IndentedDumper(yaml.Dumper):
-
-#     def increase_indent(self, flow=False, indentless=False):
-#         return super(IndentedDumper, self).increase_indent(flow, False)
-
-# def save_config(path, name, config):
-#     file_name = get_free_name(path, name, '.yaml')
-
-    # with open(file_name, 'w') as file:
-    #     yaml.dump(config, file_name, Dumper=IndentedDumper, default_flow_style=False)
-
-    # yaml.safe_dump(config, Path(path, file_name).open('w'), sort_keys=False, Dumper=TabDumper, default_flow_style=False, indent=1, width=2)
 
 class MyDumper(yaml.Dumper):
 
