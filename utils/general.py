@@ -5,6 +5,8 @@ import numpy as np
 import yaml
 from pathlib import Path
 from models.LSTM import LSTM
+from datetime import datetime
+
 
 def get_files(directory, extension='.csv'):
     """Walks through a directory tree and returns a list of all csv file's paths
@@ -58,4 +60,3 @@ def map_state_dict(target_state_dict, source_state_dict):
             mapped_state_dict['src_to_tgt'][skey] = key
             mapped_state_dict['tgt_to_src'][key] = skey
     return mapped_state_dict
-    

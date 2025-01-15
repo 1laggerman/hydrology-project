@@ -1,7 +1,10 @@
+from collections import defaultdict
+from typing import Literal
 from utils.general import *
 import os
 import pandas as pd
 import yaml
+from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 
 def build_basins_config(src_path, dst_path):
 
@@ -14,7 +17,7 @@ def build_basins_config(src_path, dst_path):
             if file.endswith(".csv"):
                 basins[directory].append(file[:-4])
 
-    save_config(dst_path, 'basins', basins)
+    save_config(dst_path, 'all_basins', basins)
 
 def build_attr_config(src_path, dst_path):
 
@@ -35,39 +38,6 @@ def build_attr_config(src_path, dst_path):
     if file.endswith(".csv"):
         parts = file.split('_')
         attr['DYNAMIC_ATTRIBUTES'] = {'sample_path': os.path.join('timeseries', 'csv', 'camels', file), 'SIZE': 0, 'KEYS': [], 'names': []}
-        
-
-    # files, _ = get_files(os.path.join(src_path, 'timeseries', 'csv', 'camels'), extension='.csv')
-    # sampleBaseFile = files[0]
-
-    # files, _ = get_files(os.path.join(src_path, 'attributes', 'camels'), extension='.csv')
-
-    # attr = {
-    #     'BASE_ATTRIBUTES': {
-    #         'sample_path': sampleBaseFile,
-    #         'SIZE': 0,
-    #         'KEYS': ['date'],
-    #         'names': []
-    #     },
-    #     'CARAVAN_ATTRIBUTES': {
-    #         'sample_path': next((s for s in files if 'caravan' in s)),
-    #         'SIZE': 0,
-    #         'KEYS': ['gauge_id'],
-    #         'names': [],
-    #     },
-    #     'HYDROATLAS_ATTRIBUTES': {
-    #         'sample_path': next((s for s in files if 'hydroatlas' in s)),
-    #         'SIZE': 0,
-    #         'KEYS': ['gauge_id'],
-    #         'names': [],
-    #     },
-    #     'OTHER_ATTRIBUTES': {
-    #         'sample_path': next((s for s in files if 'other' in s)),
-    #         'SIZE': 0,
-    #         'KEYS': ['gauge_id', 'gauge_name', 'country'],
-    #         'names': [],
-    #     }
-    # }
 
     for key, value in attr['STATIC_ATTRIBUTES'].items():
 
@@ -108,22 +78,17 @@ def build_attr_config(src_path, dst_path):
 
 
     # print(attr)
-    save_config(dst_path, 'attributes', attr)
+    save_config(dst_path, 'all_attributes', attr)
 
     return attr
 
-def load_config(path):
+# def load_config(path):
 
-    data_conf = yaml.safe_load(Path(path, 'Data.yaml').read_text())
+#     run_conf = {}
+#     run_conf.update(data_conf)
+#     run_conf.update(model_conf)
 
-
-    model_conf = yaml.safe_load(Path(path, 'Model.yaml').read_text())
-
-    run_conf = {}
-    run_conf.update(data_conf)
-    run_conf.update(model_conf)
-
-    return run_conf
+#     return run_conf
 
 class MyDumper(yaml.Dumper):
 
@@ -135,7 +100,104 @@ class MyDumper(yaml.Dumper):
         if (self.indent == 0):
             self.stream.write('\n')
 
-def save_config(path, name, config):
+def save_config(path, name, config, overwrite=False):
+    file_name = name + '.yaml'
+    if not overwrite:
+        file_name = get_free_name(path, name, '.yaml')
+    yaml.dump(config, Path(path, file_name).open('w'), Dumper=MyDumper, default_flow_style=False, sort_keys=False)
 
-    file_name = get_free_name(path, name, '.yaml')
-    yaml.dump(config, Path(path, file_name).open('w'), Dumper=MyDumper, default_flow_style=False)
+def build_save_config(config: Config):
+    saved_conf = config._cfg.copy()
+    
+    for key, val in saved_conf.items():
+        if isinstance(val, Path):
+            saved_conf[key] = str(val).replace('\\', '/')            
+        elif isinstance(val, pd.Timestamp):
+            saved_conf[key] = val.strftime('%d/%m/%Y')
+    
+    return saved_conf
+
+
+def create_run_config(config: Config, strip=False, layout_basins: Literal['full', 'organized', None] = 'organized'):
+    saved_conf = build_save_config(config)
+
+    if strip:
+        saved_conf.pop('experiment_name')
+        saved_conf.pop('run_dir')
+
+    if layout_basins == 'full' or layout_basins == 'organized':
+        categories = {
+            'train': config.train_basin_file,
+            'validation': config.validation_basin_file,
+            'test': config.test_basin_file
+        }
+        basin_files = set([categories['train'], categories['validation'], categories['test']])
+        basins = {file: [] for file in basin_files}
+
+        for file_name, basins_in_file in basins.items():
+            with open(file_name, 'r') as f:
+                for line in f:
+                    basins_in_file.append(line.strip())
+        
+        if layout_basins == 'organized':
+            for file_name in basins.keys():    
+                all_basins: dict = yaml.safe_load(open('configs/all_basins.yaml', 'r'))
+                concise_basins = {}
+                for set_name, basins_in_set in all_basins.items():
+                    all_basins_set = set(basins_in_set)
+                    my_basins_set = set(basins[file_name])
+                    if all_basins_set.issubset(my_basins_set):
+                        concise_basins[set_name] = 'all'
+                    else:
+                        concise_basins[set_name] = list(all_basins_set.intersection(my_basins_set))
+                basins[file_name] = concise_basins
+
+        
+
+        indices = defaultdict(list)
+        for key, value in categories.items():
+            indices[value].append(key)
+        
+        saved_conf['basins'] = {}
+        for key, value in indices.items():
+            category_name = ' & '.join(value)
+            saved_conf['basins'][category_name] = basins[key]
+
+    return saved_conf
+    
+
+def create_run_folder(config: Config):
+    # Create the base directory if it doesn't exist
+    os.makedirs(str(config.run_dir / config.experiment_name), exist_ok=True)
+
+    # Format the current timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_path = str(config.run_dir / config.experiment_name / timestamp)
+
+    # Create a specific run directory
+    print(run_path)
+    os.makedirs(run_path)
+
+    save_config(run_path, 'run_config', create_run_config(config, strip=True, layout_basins='organized'), overwrite=True)
+    
+    return run_path
+
+def find_latest_run_folder(config: Config):
+    all_runs = [str(config.run_dir / config.experiment_name / d) for d in os.listdir(str(config.run_dir / config.experiment_name)) if os.path.isdir(str(config.run_dir / config.experiment_name / d))]
+    latest_run = max(all_runs, key=os.path.getmtime)
+    
+    return latest_run
+
+def generate_basins_txt(selector: dict, src_path, dst_path):
+    
+    src_basins = yaml.safe_load(open(src_path, 'r'))
+    basins = []
+    for key, value in selector.items():
+        if value == 'all':
+            basins.extend(src_basins[key])
+        else:
+            basins.extend(value)
+    
+    with open(dst_path, 'w') as f:
+        for basin in basins:
+            f.write(basin + '\n')
