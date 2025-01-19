@@ -1,0 +1,51 @@
+2025-01-19 17:53:01,585: Logging to runs\all_data_caravan_test\20250119_175301\all_data_caravan_test_1901_175301\output.log initialized.
+2025-01-19 17:53:01,585: ### Folder structure created at runs\all_data_caravan_test\20250119_175301\all_data_caravan_test_1901_175301
+2025-01-19 17:53:01,586: ### Run configurations for all_data_caravan_test
+2025-01-19 17:53:01,586: experiment_name: all_data_caravan_test
+2025-01-19 17:53:01,586: run_dir: runs\all_data_caravan_test\20250119_175301\all_data_caravan_test_1901_175301
+2025-01-19 17:53:01,587: train_basin_file: configs\basins\all_basins.txt
+2025-01-19 17:53:01,587: validation_basin_file: configs\basins\all_basins.txt
+2025-01-19 17:53:01,587: test_basin_file: configs\basins\all_basins.txt
+2025-01-19 17:53:01,588: train_start_date: 2001-01-01 00:00:00
+2025-01-19 17:53:01,588: train_end_date: 2020-12-31 00:00:00
+2025-01-19 17:53:01,588: validation_start_date: 1981-01-01 00:00:00
+2025-01-19 17:53:01,588: validation_end_date: 1990-12-31 00:00:00
+2025-01-19 17:53:01,589: test_start_date: 1991-01-01 00:00:00
+2025-01-19 17:53:01,589: test_end_date: 2000-12-31 00:00:00
+2025-01-19 17:53:01,589: seed: 17
+2025-01-19 17:53:01,589: device: cuda:0
+2025-01-19 17:53:01,590: validate_every: 1
+2025-01-19 17:53:01,590: validate_n_random_basins: 6375
+2025-01-19 17:53:01,590: metrics: ['NSE', 'KGE', 'FHV']
+2025-01-19 17:53:01,590: model: cudalstm
+2025-01-19 17:53:01,590: head: regression
+2025-01-19 17:53:01,591: hidden_size: 256
+2025-01-19 17:53:01,591: initial_forget_bias: 3
+2025-01-19 17:53:01,591: output_dropout: 0.4
+2025-01-19 17:53:01,591: output_activation: linear
+2025-01-19 17:53:01,592: optimizer: Adam
+2025-01-19 17:53:01,592: loss: NSE
+2025-01-19 17:53:01,592: allow_subsequent_nan_losses: 100
+2025-01-19 17:53:01,592: learning_rate: {0: 5e-05, 30: 5e-06}
+2025-01-19 17:53:01,592: batch_size: 256
+2025-01-19 17:53:01,592: epochs: 40
+2025-01-19 17:53:01,592: clip_gradient_norm: None
+2025-01-19 17:53:01,593: predict_last_n: 1
+2025-01-19 17:53:01,593: seq_length: 365
+2025-01-19 17:53:01,593: num_workers: 4
+2025-01-19 17:53:01,593: log_interval: 5
+2025-01-19 17:53:01,593: log_tensorboard: True
+2025-01-19 17:53:01,593: save_weights_every: 1
+2025-01-19 17:53:01,594: save_validation_results: False
+2025-01-19 17:53:01,594: dataset: caravan
+2025-01-19 17:53:01,594: data_dir: ..\data\Caravan
+2025-01-19 17:53:01,594: forcings: ['maurer']
+2025-01-19 17:53:01,594: dynamic_inputs: ['snow_depth_water_equivalent_mean', 'surface_net_solar_radiation_mean', 'surface_net_thermal_radiation_mean', 'surface_pressure_mean', 'temperature_2m_mean', 'dewpoint_temperature_2m_mean', 'u_component_of_wind_10m_mean', 'v_component_of_wind_10m_mean', 'volumetric_soil_water_layer_1_mean', 'volumetric_soil_water_layer_2_mean', 'volumetric_soil_water_layer_3_mean', 'volumetric_soil_water_layer_4_mean', 'total_precipitation_sum', 'potential_evaporation_sum']
+2025-01-19 17:53:01,595: target_variables: ['streamflow']
+2025-01-19 17:53:01,595: static_attributes: ['p_mean', 'pet_mean', 'aridity', 'frac_snow', 'high_prec_freq', 'high_prec_dur', 'low_prec_freq', 'low_prec_dur', 'moisture_index', 'seasonality', 'gwt_cm_sav', 'ele_mt_sav', 'slp_dg_sav', 'sgr_dk_sav', 'area', 'glc_pc_s01', 'glc_pc_s02', 'glc_pc_s03', 'glc_pc_s04', 'glc_pc_s06', 'glc_pc_s07', 'glc_pc_s08', 'glc_pc_s09', 'glc_pc_s10', 'glc_pc_s11', 'glc_pc_s12', 'glc_pc_s13', 'glc_pc_s14', 'glc_pc_s15', 'glc_pc_s16', 'glc_pc_s17', 'glc_pc_s18', 'glc_pc_s19', 'glc_pc_s20', 'glc_pc_s21', 'glc_pc_s22', 'pnv_pc_s01', 'pnv_pc_s02', 'pnv_pc_s03', 'pnv_pc_s04', 'pnv_pc_s05', 'pnv_pc_s06', 'pnv_pc_s07', 'pnv_pc_s08', 'pnv_pc_s09', 'pnv_pc_s10', 'pnv_pc_s11', 'pnv_pc_s12', 'pnv_pc_s13', 'pnv_pc_s14', 'pnv_pc_s15']
+2025-01-19 17:53:01,595: statics_embedding: {'hiddens': 10}
+2025-01-19 17:53:01,595: number_of_basins: 6830
+2025-01-19 17:53:01,596: train_dir: runs\all_data_caravan_test\20250119_175301\all_data_caravan_test_1901_175301\train_data
+2025-01-19 17:53:01,596: img_log_dir: runs\all_data_caravan_test\20250119_175301\all_data_caravan_test_1901_175301\img_log
+2025-01-19 17:53:01,598: ### Device cuda:0 will be used for training
+2025-01-19 17:53:04,807: Loading basin data into xarray data set.

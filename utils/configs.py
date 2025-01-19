@@ -172,13 +172,14 @@ def create_run_folder(config: Config):
 
     # Format the current timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_path = str(config.run_dir / config.experiment_name / timestamp)
+    run_path = str(config.run_dir / config.experiment_name)
+    config.run_dir = Path(run_path)
 
     # Create a specific run directory
     print(run_path)
     os.makedirs(run_path)
 
-    save_config(run_path, 'run_config', create_run_config(config, strip=True, layout_basins='organized'), overwrite=True)
+    save_config(run_path, 'run_config', create_run_config(config, strip=True, layout_basins='full'), overwrite=True)
     
     return run_path
 
