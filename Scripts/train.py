@@ -1,12 +1,12 @@
 
 from nhWrap.neuralhydrology.neuralhydrology.nh_run import start_training, start_run
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
-from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer
+from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer, LOGGER
 from pathlib import Path
-from utils.configs import create_run_folder
+from utils.configs import add_run_config
 
-gpu = 0
-config = Config(Path('configs/working_confs/base.yaml'))
+gpu = -1
+config = Config(Path('RT_flood/check_loss_config.yaml'))
 
 # check if a GPU has been specified as command line argument. If yes, overwrite config
 if gpu is not None and gpu >= 0:
@@ -17,15 +17,15 @@ if gpu is not None and gpu < 0:
 if config.run_dir is None:
     config.run_dir = Path('runs')
 
-# create a run folder with saved config of this run
-create_run_folder(config)
-
 # # start training
 if config.head.lower() in ['regression', 'gmm', 'umal', 'cmal', '']:
     trainer = BaseTrainer(cfg=config)
 else:
     raise ValueError(f"Unknown head {config.head}.")
 
+
+# add run config file to folder
+add_run_config(trainer)
 
 trainer.initialize_training()
 
@@ -40,8 +40,12 @@ if (trainer.validator is not None):
 
     valid_metrics = trainer.experiment_logger.summarise()
     print_msg = f"Epoch 0 average validation loss: {valid_metrics['avg_total_loss']:.5f}"
-    print(print_msg)
+    # print(print_msg)
+    if trainer.cfg.metrics:
+        print_msg += f" -- Median validation metrics: "
+        print_msg += ", ".join(f"{k}: {v:.5f}" for k, v in valid_metrics.items() if k != 'avg_total_loss')
+        LOGGER.info(print_msg)
 
-# trainer.train_and_validate()
+trainer.train_and_validate()
 
 
