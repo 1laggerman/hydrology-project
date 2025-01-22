@@ -7,6 +7,8 @@ from pathlib import Path
 from models.LSTM import LSTM
 from datetime import datetime
 
+from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
+
 
 def get_files(directory, extension='.csv'):
     """Walks through a directory tree and returns a list of all csv file's paths
@@ -60,3 +62,42 @@ def map_state_dict(target_state_dict, source_state_dict):
             mapped_state_dict['src_to_tgt'][skey] = key
             mapped_state_dict['tgt_to_src'][key] = skey
     return mapped_state_dict
+
+def get_last_run(config: Config):
+    if config.run_dir is None:
+        config.run_dir = Path('runs')
+        
+    main_directory = str(config.run_dir / config.experiment_name)
+    # List all directories in the main directory
+    directories = [d for d in os.listdir(main_directory) if os.path.isdir(os.path.join(main_directory, d))]
+
+    # Initialize variables to store the latest datetime and corresponding folder name
+    latest_datetime = datetime.min
+    latest_folder = None
+
+    # Loop through each directory and parse the datetime from its name
+    for directory in directories:
+        try:
+            # Extract the datetime part of the folder name (assuming the format you described)
+            # Adjust the slicing if the experiment_name contains underscores
+            parts = directory.split('_')
+            date_part = parts[-2]  # This is 'DDMM'
+            time_part = parts[-1]  # This is 'HHMMSS'
+            day = int(date_part[:2])
+            month = int(date_part[2:4])
+            hour = int(time_part[:2])
+            minute = int(time_part[2:4])
+            second = int(time_part[4:6])
+            
+            # Create a datetime object from the extracted parts
+            folder_datetime = datetime(datetime.now().year, month, day, hour, minute, second)
+            
+            # Update the latest folder if this folder's datetime is later
+            if folder_datetime > latest_datetime:
+                latest_datetime = folder_datetime
+                latest_folder = directory
+
+        except ValueError:
+            continue  # Skip folders that do not match the expected format
+
+    return latest_folder

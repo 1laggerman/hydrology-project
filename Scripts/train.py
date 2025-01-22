@@ -3,7 +3,7 @@ from nhWrap.neuralhydrology.neuralhydrology.nh_run import start_training, start_
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer, LOGGER
 from pathlib import Path
-from utils.configs import add_run_config
+from utils.configs import add_run_config, create_run_dir
 
 gpu = -1
 config = Config(Path('RT_flood/check_loss_config.yaml'))
@@ -14,8 +14,10 @@ if gpu is not None and gpu >= 0:
 if gpu is not None and gpu < 0:
     config.device = "cpu"
 
-if config.run_dir is None:
-    config.run_dir = Path('runs')
+# if config.run_dir is None:
+#     config.run_dir = Path('runs')
+
+create_run_dir(config)
 
 # # start training
 if config.head.lower() in ['regression', 'gmm', 'umal', 'cmal', '']:

@@ -168,32 +168,23 @@ def create_run_config(config: Config, strip=False, layout_basins: Literal['full'
     return saved_conf
     
 
-def add_run_config(config: Config, mode: Literal['full', 'organized', None] = 'full'):
-    # Create the base directory if it doesn't exist
-    os.makedirs(str(config.run_dir / config.experiment_name), exist_ok=True)
+def create_run_dir(config: Config):
+    if config.run_dir is None:
+        config.run_dir = Path('runs')
 
-    # Format the current timestamp
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_path = str(config.run_dir / config.experiment_name)
-    config.run_dir = Path(run_path)
+    new_run_path = str(config.run_dir / config.experiment_name)
+    os.makedirs(new_run_path, exist_ok=True)
 
-    # Create a specific run directory
-    print(run_path)
-    os.makedirs(run_path)
-
-    save_config(run_path, 'run_config', create_run_config(config, strip=True, layout_basins=mode), overwrite=True)
-    
-    return run_path
+    config.run_dir = Path(new_run_path)
 
 def add_run_config(trainer: BaseTrainer, mode: Literal['full', 'organized', None] = 'full'):
     # Create the base directory if it doesn't exist
     save_config(str(trainer.cfg.run_dir), 'run_config', create_run_config(trainer.cfg, strip=True, layout_basins=mode), overwrite=True)
 
-def find_latest_run_folder(config: Config):
-    all_runs = [str(config.run_dir / config.experiment_name / d) for d in os.listdir(str(config.run_dir / config.experiment_name)) if os.path.isdir(str(config.run_dir / config.experiment_name / d))]
-    latest_run = max(all_runs, key=os.path.getmtime)
-    
-    return latest_run
+def get_last_run_config(config: Config):
+    folder = get_last_run(config)
+    print(Path(config.run_dir, folder, 'run_config.yaml'))
+    return Config(Path(config.run_dir, folder, 'run_config.yaml'))
 
 def generate_basins_txt(selector: dict, src_path, dst_path):
     

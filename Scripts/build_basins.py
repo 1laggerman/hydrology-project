@@ -14,5 +14,3 @@ selector = {
 }
 
 generate_basins_txt(selector, 'configs/all_basins.yaml', 'configs/basins/all_basins.txt')
-
-
