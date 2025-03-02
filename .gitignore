@@ -1,2 +1,4 @@
 data/**
 neuralhydrology/** 
+runs/**
+__pycache__/

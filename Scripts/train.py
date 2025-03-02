@@ -4,6 +4,7 @@ from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer, LOGGER
 from pathlib import Path
 from utils.configs import add_run_config, create_run_dir
+from models.trainers.MyBaseTrainer import MyBaseTrainer
 
 gpu = -1
 config = Config(Path('RT_flood/check_loss_config.yaml'))
@@ -14,24 +15,21 @@ if gpu is not None and gpu >= 0:
 if gpu is not None and gpu < 0:
     config.device = "cpu"
 
-# if config.run_dir is None:
-#     config.run_dir = Path('runs')
-
-create_run_dir(config)
-
 # # start training
 if config.head.lower() in ['regression', 'gmm', 'umal', 'cmal', '']:
-    trainer = BaseTrainer(cfg=config)
+    trainer = MyBaseTrainer(cfg=config)
 else:
     raise ValueError(f"Unknown head {config.head}.")
 
-
-# add run config file to folder
-add_run_config(trainer)
-
 trainer.initialize_training()
 
-# get epoch 0 loss
+# get epoch 0 train loss
+trainer._epoch_0()
+avg_losses = trainer.experiment_logger.summarise()
+loss_str = ", ".join(f"{k}: {v:.5f}" for k, v in avg_losses.items())
+LOGGER.info(f"Epoch {0} average loss: {loss_str}")
+
+# get epoch 0 validation loss
 if (trainer.validator is not None):
     trainer.validator.evaluate(epoch=0,
                             save_results=trainer.cfg.save_validation_results,

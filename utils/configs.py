@@ -177,9 +177,11 @@ def create_run_dir(config: Config):
 
     config.run_dir = Path(new_run_path)
 
-def add_run_config(trainer: BaseTrainer, mode: Literal['full', 'organized', None] = 'full'):
+def add_run_config(cfg: Config, mode: Literal['full', 'organized', None] = 'full'):
     # Create the base directory if it doesn't exist
-    save_config(str(trainer.cfg.run_dir), 'run_config', create_run_config(trainer.cfg, strip=True, layout_basins=mode), overwrite=True)
+    configs_path = cfg.run_dir / 'full_configs'
+    os.makedirs(str(configs_path), exist_ok=True)
+    save_config(str(configs_path), 'run_config', create_run_config(cfg, strip=True, layout_basins=mode), overwrite=False)
 
 def get_last_run_config(config: Config):
     folder = get_last_run(config)

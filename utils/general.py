@@ -4,7 +4,7 @@ import os
 import numpy as np
 import yaml
 from pathlib import Path
-from models.LSTM import LSTM
+from models.networks.LSTM import LSTM
 from datetime import datetime
 
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
@@ -85,12 +85,13 @@ def get_last_run(config: Config):
             time_part = parts[-1]  # This is 'HHMMSS'
             day = int(date_part[:2])
             month = int(date_part[2:4])
+            year = int(date_part[4:8])
             hour = int(time_part[:2])
             minute = int(time_part[2:4])
             second = int(time_part[4:6])
             
             # Create a datetime object from the extracted parts
-            folder_datetime = datetime(datetime.now().year, month, day, hour, minute, second)
+            folder_datetime = datetime(year, month, day, hour, minute, second)
             
             # Update the latest folder if this folder's datetime is later
             if folder_datetime > latest_datetime:
