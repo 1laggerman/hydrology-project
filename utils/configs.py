@@ -10,14 +10,14 @@ from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrai
 
 def build_basins_config(src_path, dst_path):
 
-    root_dir = os.path.join(src_path, 'timeseries', 'csv')
+    root_dir = os.path.join(src_path, 'timeseries', 'netcdf')
     basins = {}
 
     for directory in os.listdir(root_dir):
         basins[directory] = []
         for file in os.listdir(os.path.join(root_dir, directory)):
-            if file.endswith(".csv"):
-                basins[directory].append(file[:-4])
+            if file.endswith(".nc"):
+                basins[directory].append(file[:-3])
 
     save_config(dst_path, 'all_basins', basins)
 
@@ -83,14 +83,6 @@ def build_attr_config(src_path, dst_path):
     save_config(dst_path, 'all_attributes', attr)
 
     return attr
-
-# def load_config(path):
-
-#     run_conf = {}
-#     run_conf.update(data_conf)
-#     run_conf.update(model_conf)
-
-#     return run_conf
 
 class MyDumper(yaml.Dumper):
 
