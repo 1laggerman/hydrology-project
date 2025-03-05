@@ -7,7 +7,7 @@ from utils.configs import add_run_config, create_run_dir
 from models.trainers.MyBaseTrainer import MyBaseTrainer
 
 gpu = -1
-config = Config(Path('RT_flood/check_loss_config.yaml'))
+config = Config(Path('RT_flood/configs/base_config.yaml'))
 
 # check if a GPU has been specified as command line argument. If yes, overwrite config
 if gpu is not None and gpu >= 0:
