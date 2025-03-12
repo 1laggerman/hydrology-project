@@ -1,0 +1,15 @@
+python=3.12
+conda install pytorch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 pytorch-cuda=12.4 -c pytorch -c nvidia
+
+
+tensorboard
+matplotlib
+scipy
+ruamel
+ruamel.yaml
+numba
+tqdm
+xarray
+pandas
+netcdf4
+h5netcdf
