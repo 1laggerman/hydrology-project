@@ -1,29 +1,26 @@
-autoregressive_inputs:
-- Flow_m3_sec_zscore_norm_shift18
-
-batch_size: 512
-
-clip_gradient_norm: 1
-
-clip_targets_to_zero:
-- Flow_m3_sec_zscore_norm
-
 data_dir: ..\data\Caravan
 dataset: caravan
 
+experiment_name: base_Training
+
 device: cuda:0
 
-epochs: 30
+seed: 17
 
-experiment_name: base_Training
-forcings:
-- il
+num_workers: 4
 
-head: regression
+batch_size: 512
 
-hidden_size: 128
+dynamic_inputs:
+- Rain_gauge_1_zscore_norm
+- Rain_gauge_2_zscore_norm
+- Rain_gauge_3_zscore_norm
 
-initial_forget_bias: 3
+autoregressive_inputs:
+- Flow_m3_sec_zscore_norm_shift18
+
+clip_targets_to_zero:
+- Flow_m3_sec_zscore_norm
 
 lagged_features:
   Flow_m3_sec_zscore_norm:
@@ -35,40 +32,51 @@ lagged_features:
   Rain_gauge_3_zscore_norm:
   - 18
 
-learning_rate:
-  0: 5e-4
-  5: 1e-4
-  10: 5e-5
-  15: 1e-5
-  20: 5e-6
-  25: 1e-6
+model: arlstm
 
-log_interval: 1
+seq_length: 32
 
-log_n_figures: 8
+head: regression
 
-log_tensorboard: true
+optimizer: Adam
 
 loss: MSE
 
-metrics:
-- MSE
+epochs: 30
 
-model: arlstm
+learning_rate:
+  0: 1e-3
+  5: 5e-4
+  10: 1e-4
+  15: 5e-5
+  20: 1e-5
+  25: 5e-6
 
-num_workers: 4
-
-optimizer: Adam
+hidden_size: 128
 
 output_activation: linear
 
 output_dropout: 0
 
+clip_gradient_norm: 1
+
+initial_forget_bias: 3
+
+forcings:
+- il
+
+log_tensorboard: true
+
+log_interval: 5
+
+log_n_figures: 18
+
+metrics:
+- MSE
+
 predict_last_n: 1
 
 save_weights_every: 5
-
-seq_length: 32
 
 target_variables:
 - Flow_m3_sec_zscore_norm
@@ -91,21 +99,17 @@ train_end_date:
 - 30/05/2015
 - 30/05/2016
 
-validate_every: 5
-validate_n_random_basins: 0
 
 validation_basin_file: RT_flood/basins/all_il_basins.txt
 validation_start_date: 01/10/2016
 validation_end_date: 30/05/2017
 
+validate_every: 5
+validate_n_random_basins: 0
+
 test_basin_file: RT_flood/basins/all_il_basins.txt
 test_start_date: 01/10/2017
 test_end_date: 30/05/2018
-
-dynamic_inputs:
-- Rain_gauge_1_zscore_norm
-- Rain_gauge_2_zscore_norm
-- Rain_gauge_3_zscore_norm
 
 statics_embedding:
   hiddens: 25

@@ -1,0 +1,303 @@
+data_dir: ../data/Caravan
+
+dataset: caravan
+
+device: cuda:0
+
+seed: 17
+
+num_workers: 4
+
+batch_size: 512
+
+dynamic_inputs:
+  - Rain_gauge_1_zscore_norm
+  - Rain_gauge_2_zscore_norm
+  - Rain_gauge_3_zscore_norm
+
+autoregressive_inputs:
+  - Flow_m3_sec_zscore_norm_shift18
+
+clip_targets_to_zero:
+  - Flow_m3_sec_zscore_norm
+
+lagged_features:
+  Flow_m3_sec_zscore_norm:
+    - 18
+  Rain_gauge_1_zscore_norm:
+    - 18
+  Rain_gauge_2_zscore_norm:
+    - 18
+  Rain_gauge_3_zscore_norm:
+    - 18
+
+model: arlstm
+
+seq_length: 32
+
+head: regression
+
+optimizer: Adam
+
+loss: MSE
+
+epochs: 30
+
+learning_rate:
+  0: 0.001
+  5: 0.0005
+  10: 0.0001
+  15: 5.0e-05
+  20: 1.0e-05
+  25: 5.0e-06
+
+hidden_size: 128
+
+output_activation: linear
+
+output_dropout: 0
+
+clip_gradient_norm: 1
+
+initial_forget_bias: 3
+
+forcings:
+  - il
+
+log_tensorboard: true
+
+log_interval: 5
+
+log_n_figures: 18
+
+metrics:
+  - MSE
+
+predict_last_n: 1
+
+save_weights_every: 5
+
+target_variables:
+  - Flow_m3_sec_zscore_norm
+
+use_basin_id_encoding: false
+
+train_basin_file: RT_flood/basins/all_il_basins.txt
+
+train_start_date:
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1285891200000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1317427200000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1349049600000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1380585600000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1412121600000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1443657600000000000
+    - null
+    - null
+    - 10
+
+train_end_date:
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1306713600000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1338336000000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1369872000000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1401408000000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1432944000000000000
+    - null
+    - null
+    - 10
+  - !!python/object/apply:pandas._libs.tslibs.timestamps._unpickle_timestamp
+    - 1464566400000000000
+    - null
+    - null
+    - 10
+
+validation_basin_file: RT_flood/basins/all_il_basins.txt
+
+validation_start_date: 01/10/2016
+
+validation_end_date: 30/05/2017
+
+validate_every: 5
+
+validate_n_random_basins: 0
+
+test_basin_file: RT_flood/basins/all_il_basins.txt
+
+test_start_date: 01/10/2017
+
+test_end_date: 30/05/2018
+
+statics_embedding:
+  hiddens: 25
+
+static_attributes:
+  - cmi_ix_s02
+  - glc_pc_s20
+  - lka_pc_sse
+  - glc_pc_s22
+  - glc_pc_s15
+  - cmi_ix_s12
+  - cmi_ix_s01
+  - pnv_pc_s11
+  - ele_mt_smn
+  - cmi_ix_s11
+  - riv_tc_usu
+  - area
+  - glc_pc_s14
+  - dis_m3_pmn
+  - glc_pc_s19
+  - for_pc_sse
+  - glc_pc_s03
+  - pre_mm_s09
+  - inu_pc_smn
+  - dis_m3_pyr
+  - ero_kh_sav
+  - glc_pc_s18
+  - pnv_pc_s12
+  - dis_m3_pmx
+  - pnv_pc_s09
+  - glc_pc_s16
+  - urb_pc_sse
+  - cmi_ix_s03
+  - glc_pc_s12
+  - pre_mm_s05
+  - inu_pc_smx
+  - crp_pc_sse
+  - rdd_mk_sav
+  - sgr_dk_sav
+  - swc_pc_s10
+  - pst_pc_sse
+  - swc_pc_s09
+  - pre_mm_s04
+  - aet_mm_s10
+  - aet_mm_s09
+  - ari_ix_sav
+  - swc_pc_s11
+  - pre_mm_s10
+  - p_mean
+  - low_prec_dur
+  - ele_mt_sav
+  - swc_pc_s12
+  - pre_mm_s01
+  - aet_mm_s11
+  - pre_mm_s02
+  - swc_pc_s05
+  - kar_pc_sse
+  - swc_pc_syr
+  - seasonality
+  - pre_mm_syr
+  - pre_mm_s12
+  - swc_pc_s01
+  - aet_mm_s12
+  - swc_pc_s02
+  - run_mm_syr
+  - pre_mm_s11
+  - swc_pc_s04
+  - swc_pc_s03
+  - pre_mm_s03
+  - aet_mm_s05
+  - aet_mm_syr
+  - aet_mm_s01
+  - ele_mt_smx
+  - aet_mm_s02
+  - aet_mm_s04
+  - aet_mm_s03
+  - slp_dg_sav
+  - hft_ix_s09
+  - gwt_cm_sav
+  - cmi_ix_syr
+  - moisture_index
+  - pet_mean
+  - tmp_dc_s01
+  - cly_pc_sav
+  - tmp_dc_s02
+  - cmi_ix_s04
+  - high_prec_freq
+  - pet_mm_s01
+  - tmp_dc_s03
+  - tmp_dc_s12
+  - pet_mm_s02
+  - pet_mm_s12
+  - pet_mm_s03
+  - tmp_dc_s04
+  - pet_mm_s11
+  - snd_pc_sav
+  - tmp_dc_s11
+  - cmi_ix_s10
+  - pet_mm_s04
+  - pet_mm_syr
+  - tmp_dc_syr
+  - pet_mm_s05
+  - tmp_dc_s05
+  - pet_mm_s10
+  - pet_mm_s09
+  - low_prec_freq
+  - tmp_dc_s10
+  - tmp_dc_s09
+  - cmi_ix_s05
+  - high_prec_dur
+  - cmi_ix_s09
+
+number_of_basins: 18
+
+train_dir: G:/programming/Work/hydrology research/for work/hydrology-project/runs/base_Training/13032025_011547/train_data
+
+img_log_dir: G:/programming/Work/hydrology research/for work/hydrology-project/runs/base_Training/13032025_011547/img_log
+
+basins:
+  train & validation & test:
+    - il_12130
+    - il_12140
+    - il_13105
+    - il_14120
+    - il_15120
+    - il_17110
+    - il_19160
+    - il_2105
+    - il_21120
+    - il_21130
+    - il_30165
+    - il_30170
+    - il_31110
+    - il_4110
+    - il_5110
+    - il_7105
+    - il_8146
+    - il_8155

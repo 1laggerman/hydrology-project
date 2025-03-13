@@ -1,0 +1,97 @@
+2025-03-13 01:15:47,106: Logging to G:\programming\Work\hydrology research\for work\hydrology-project\runs\base_Training\13032025_011547\output.log initialized.
+2025-03-13 01:15:47,106: ### Folder structure created at G:\programming\Work\hydrology research\for work\hydrology-project\runs\base_Training\13032025_011547
+2025-03-13 01:15:47,106: ### Run configurations for base_Training
+2025-03-13 01:15:47,106: data_dir: ..\data\Caravan
+2025-03-13 01:15:47,106: dataset: caravan
+2025-03-13 01:15:47,106: experiment_name: base_Training
+2025-03-13 01:15:47,106: device: cuda:0
+2025-03-13 01:15:47,106: seed: 17
+2025-03-13 01:15:47,106: num_workers: 4
+2025-03-13 01:15:47,106: batch_size: 512
+2025-03-13 01:15:47,106: dynamic_inputs: ['Rain_gauge_1_zscore_norm', 'Rain_gauge_2_zscore_norm', 'Rain_gauge_3_zscore_norm']
+2025-03-13 01:15:47,106: autoregressive_inputs: ['Flow_m3_sec_zscore_norm_shift18']
+2025-03-13 01:15:47,106: clip_targets_to_zero: ['Flow_m3_sec_zscore_norm']
+2025-03-13 01:15:47,106: lagged_features: {'Flow_m3_sec_zscore_norm': [18], 'Rain_gauge_1_zscore_norm': [18], 'Rain_gauge_2_zscore_norm': [18], 'Rain_gauge_3_zscore_norm': [18]}
+2025-03-13 01:15:47,106: model: arlstm
+2025-03-13 01:15:47,106: seq_length: 32
+2025-03-13 01:15:47,106: head: regression
+2025-03-13 01:15:47,106: optimizer: Adam
+2025-03-13 01:15:47,106: loss: MSE
+2025-03-13 01:15:47,106: epochs: 30
+2025-03-13 01:15:47,106: learning_rate: {0: 0.001, 5: 0.0005, 10: 0.0001, 15: 5e-05, 20: 1e-05, 25: 5e-06}
+2025-03-13 01:15:47,106: hidden_size: 128
+2025-03-13 01:15:47,106: output_activation: linear
+2025-03-13 01:15:47,106: output_dropout: 0
+2025-03-13 01:15:47,106: clip_gradient_norm: 1
+2025-03-13 01:15:47,119: initial_forget_bias: 3
+2025-03-13 01:15:47,119: forcings: ['il']
+2025-03-13 01:15:47,120: log_tensorboard: True
+2025-03-13 01:15:47,120: log_interval: 5
+2025-03-13 01:15:47,120: log_n_figures: 18
+2025-03-13 01:15:47,121: metrics: ['MSE']
+2025-03-13 01:15:47,122: predict_last_n: 1
+2025-03-13 01:15:47,122: save_weights_every: 5
+2025-03-13 01:15:47,122: target_variables: ['Flow_m3_sec_zscore_norm']
+2025-03-13 01:15:47,123: use_basin_id_encoding: False
+2025-03-13 01:15:47,123: train_basin_file: RT_flood\basins\all_il_basins.txt
+2025-03-13 01:15:47,123: train_start_date: [Timestamp('2010-10-01 00:00:00'), Timestamp('2011-10-01 00:00:00'), Timestamp('2012-10-01 00:00:00'), Timestamp('2013-10-01 00:00:00'), Timestamp('2014-10-01 00:00:00'), Timestamp('2015-10-01 00:00:00')]
+2025-03-13 01:15:47,123: train_end_date: [Timestamp('2011-05-30 00:00:00'), Timestamp('2012-05-30 00:00:00'), Timestamp('2013-05-30 00:00:00'), Timestamp('2014-05-30 00:00:00'), Timestamp('2015-05-30 00:00:00'), Timestamp('2016-05-30 00:00:00')]
+2025-03-13 01:15:47,123: validation_basin_file: RT_flood\basins\all_il_basins.txt
+2025-03-13 01:15:47,123: validation_start_date: 2016-10-01 00:00:00
+2025-03-13 01:15:47,123: validation_end_date: 2017-05-30 00:00:00
+2025-03-13 01:15:47,123: validate_every: 5
+2025-03-13 01:15:47,123: validate_n_random_basins: 0
+2025-03-13 01:15:47,123: test_basin_file: RT_flood\basins\all_il_basins.txt
+2025-03-13 01:15:47,127: test_start_date: 2017-10-01 00:00:00
+2025-03-13 01:15:47,127: test_end_date: 2018-05-30 00:00:00
+2025-03-13 01:15:47,127: statics_embedding: {'hiddens': 25}
+2025-03-13 01:15:47,127: static_attributes: ['cmi_ix_s02', 'glc_pc_s20', 'lka_pc_sse', 'glc_pc_s22', 'glc_pc_s15', 'cmi_ix_s12', 'cmi_ix_s01', 'pnv_pc_s11', 'ele_mt_smn', 'cmi_ix_s11', 'riv_tc_usu', 'area', 'glc_pc_s14', 'dis_m3_pmn', 'glc_pc_s19', 'for_pc_sse', 'glc_pc_s03', 'pre_mm_s09', 'inu_pc_smn', 'dis_m3_pyr', 'ero_kh_sav', 'glc_pc_s18', 'pnv_pc_s12', 'dis_m3_pmx', 'pnv_pc_s09', 'glc_pc_s16', 'urb_pc_sse', 'cmi_ix_s03', 'glc_pc_s12', 'pre_mm_s05', 'inu_pc_smx', 'crp_pc_sse', 'rdd_mk_sav', 'sgr_dk_sav', 'swc_pc_s10', 'pst_pc_sse', 'swc_pc_s09', 'pre_mm_s04', 'aet_mm_s10', 'aet_mm_s09', 'ari_ix_sav', 'swc_pc_s11', 'pre_mm_s10', 'p_mean', 'low_prec_dur', 'ele_mt_sav', 'swc_pc_s12', 'pre_mm_s01', 'aet_mm_s11', 'pre_mm_s02', 'swc_pc_s05', 'kar_pc_sse', 'swc_pc_syr', 'seasonality', 'pre_mm_syr', 'pre_mm_s12', 'swc_pc_s01', 'aet_mm_s12', 'swc_pc_s02', 'run_mm_syr', 'pre_mm_s11', 'swc_pc_s04', 'swc_pc_s03', 'pre_mm_s03', 'aet_mm_s05', 'aet_mm_syr', 'aet_mm_s01', 'ele_mt_smx', 'aet_mm_s02', 'aet_mm_s04', 'aet_mm_s03', 'slp_dg_sav', 'hft_ix_s09', 'gwt_cm_sav', 'cmi_ix_syr', 'moisture_index', 'pet_mean', 'tmp_dc_s01', 'cly_pc_sav', 'tmp_dc_s02', 'cmi_ix_s04', 'high_prec_freq', 'pet_mm_s01', 'tmp_dc_s03', 'tmp_dc_s12', 'pet_mm_s02', 'pet_mm_s12', 'pet_mm_s03', 'tmp_dc_s04', 'pet_mm_s11', 'snd_pc_sav', 'tmp_dc_s11', 'cmi_ix_s10', 'pet_mm_s04', 'pet_mm_syr', 'tmp_dc_syr', 'pet_mm_s05', 'tmp_dc_s05', 'pet_mm_s10', 'pet_mm_s09', 'low_prec_freq', 'tmp_dc_s10', 'tmp_dc_s09', 'cmi_ix_s05', 'high_prec_dur', 'cmi_ix_s09']
+2025-03-13 01:15:47,129: number_of_basins: 18
+2025-03-13 01:15:47,129: run_dir: G:\programming\Work\hydrology research\for work\hydrology-project\runs\base_Training\13032025_011547
+2025-03-13 01:15:47,129: train_dir: G:\programming\Work\hydrology research\for work\hydrology-project\runs\base_Training\13032025_011547\train_data
+2025-03-13 01:15:47,129: img_log_dir: G:\programming\Work\hydrology research\for work\hydrology-project\runs\base_Training\13032025_011547\img_log
+2025-03-13 01:15:47,164: ### Device cuda:0 will be used for training
+2025-03-13 01:15:47,185: Loading basin data into xarray data set.
+2025-03-13 01:15:54,278: Create lookup table and convert to pytorch tensor
+2025-03-13 01:16:22,153: Validation set to validate every 5 epoch(s), but 'validate_n_random_basins' not set or set to zero. Will validate on the entire validation set.
+2025-03-13 01:30:36,808: Epoch 1 average loss: avg_loss: 0.11283, avg_total_loss: 0.11283
+2025-03-13 01:44:49,679: Epoch 2 average loss: avg_loss: 0.09205, avg_total_loss: 0.09205
+2025-03-13 01:59:01,618: Epoch 3 average loss: avg_loss: 0.07894, avg_total_loss: 0.07894
+2025-03-13 02:13:10,087: Epoch 4 average loss: avg_loss: 0.07068, avg_total_loss: 0.07068
+2025-03-13 02:13:10,087: Setting learning rate to 0.0005
+2025-03-13 02:27:22,381: Epoch 5 average loss: avg_loss: 0.05265, avg_total_loss: 0.05265
+2025-03-13 02:28:37,125: Epoch 5 average validation loss: 0.07442 -- Median validation metrics: avg_loss: 0.07442, MSE: 0.07411
+2025-03-13 02:42:59,611: Epoch 6 average loss: avg_loss: 0.04169, avg_total_loss: 0.04169
+2025-03-13 02:57:13,298: Epoch 7 average loss: avg_loss: 0.03559, avg_total_loss: 0.03559
+2025-03-13 03:11:30,271: Epoch 8 average loss: avg_loss: 0.03104, avg_total_loss: 0.03104
+2025-03-13 03:25:51,590: Epoch 9 average loss: avg_loss: 0.02838, avg_total_loss: 0.02838
+2025-03-13 03:25:51,591: Setting learning rate to 0.0001
+2025-03-13 03:40:11,378: Epoch 10 average loss: avg_loss: 0.02090, avg_total_loss: 0.02090
+2025-03-13 03:41:13,648: Epoch 10 average validation loss: 0.03823 -- Median validation metrics: avg_loss: 0.03823, MSE: 0.06229
+2025-03-13 03:55:36,841: Epoch 11 average loss: avg_loss: 0.01792, avg_total_loss: 0.01792
+2025-03-13 04:10:03,054: Epoch 12 average loss: avg_loss: 0.01652, avg_total_loss: 0.01652
+2025-03-13 04:24:24,247: Epoch 13 average loss: avg_loss: 0.01573, avg_total_loss: 0.01573
+2025-03-13 04:38:44,737: Epoch 14 average loss: avg_loss: 0.01483, avg_total_loss: 0.01483
+2025-03-13 04:38:44,737: Setting learning rate to 5e-05
+2025-03-13 04:53:07,334: Epoch 15 average loss: avg_loss: 0.01374, avg_total_loss: 0.01374
+2025-03-13 04:54:09,490: Epoch 15 average validation loss: 0.04294 -- Median validation metrics: avg_loss: 0.04294, MSE: 0.07770
+2025-03-13 05:08:29,391: Epoch 16 average loss: avg_loss: 0.01336, avg_total_loss: 0.01336
+2025-03-13 05:22:56,073: Epoch 17 average loss: avg_loss: 0.01292, avg_total_loss: 0.01292
+2025-03-13 05:37:16,809: Epoch 18 average loss: avg_loss: 0.01266, avg_total_loss: 0.01266
+2025-03-13 05:51:36,946: Epoch 19 average loss: avg_loss: 0.01247, avg_total_loss: 0.01247
+2025-03-13 05:51:36,947: Setting learning rate to 1e-05
+2025-03-13 06:06:01,825: Epoch 20 average loss: avg_loss: 0.01192, avg_total_loss: 0.01192
+2025-03-13 06:07:04,245: Epoch 20 average validation loss: 0.04116 -- Median validation metrics: avg_loss: 0.04116, MSE: 0.07484
+2025-03-13 06:21:26,879: Epoch 21 average loss: avg_loss: 0.01177, avg_total_loss: 0.01177
+2025-03-13 06:35:48,668: Epoch 22 average loss: avg_loss: 0.01169, avg_total_loss: 0.01169
+2025-03-13 06:50:08,853: Epoch 23 average loss: avg_loss: 0.01164, avg_total_loss: 0.01164
+2025-03-13 07:04:29,366: Epoch 24 average loss: avg_loss: 0.01158, avg_total_loss: 0.01158
+2025-03-13 07:04:29,366: Setting learning rate to 5e-06
+2025-03-13 07:18:48,401: Epoch 25 average loss: avg_loss: 0.01148, avg_total_loss: 0.01148
+2025-03-13 07:19:51,707: Epoch 25 average validation loss: 0.04157 -- Median validation metrics: avg_loss: 0.04157, MSE: 0.07516
+2025-03-13 07:34:10,646: Epoch 26 average loss: avg_loss: 0.01146, avg_total_loss: 0.01146
+2025-03-13 07:48:28,065: Epoch 27 average loss: avg_loss: 0.01143, avg_total_loss: 0.01143
+2025-03-13 08:02:46,594: Epoch 28 average loss: avg_loss: 0.01140, avg_total_loss: 0.01140
+2025-03-13 08:17:05,095: Epoch 29 average loss: avg_loss: 0.01138, avg_total_loss: 0.01138
+2025-03-13 08:31:22,860: Epoch 30 average loss: avg_loss: 0.01135, avg_total_loss: 0.01135
+2025-03-13 08:32:25,111: Epoch 30 average validation loss: 0.04183 -- Median validation metrics: avg_loss: 0.04183, MSE: 0.07501

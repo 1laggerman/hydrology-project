@@ -1,2 +1,2 @@
-Epoch 0 average loss: avg_loss: 0.51812, avg_total_loss: 0.51812
-Epoch 0 average validation loss: 0.16476
+Epoch 0 average loss: avg_loss: 0.51961, avg_total_loss: 0.51961
+Epoch 0 average validation loss: 0.17156

@@ -38,22 +38,24 @@ def extract_curves_from_folder(folder_path):
     event_acc = EventAccumulator(folder_path)
     event_acc.Reload()
 
-    train_loss, valid_loss, steps = [], [], []
+    train_loss, train_loss_steps, valid_loss, valid_loss_steps = [], [], [], []
 
     if 'train/avg_loss' in event_acc.Tags()['scalars']:
         for e in event_acc.Scalars('train/avg_loss'):
             train_loss.append(e.value)
-            steps.append(e.step - 1)
+            train_loss_steps.append(e.step)
 
     if 'valid/avg_loss' in event_acc.Tags()['scalars']:
         for e in event_acc.Scalars('valid/avg_loss'):
             valid_loss.append(e.value)
+            valid_loss_steps.append(e.step)
 
     return {
         **params,
         'train_loss': train_loss,
         'valid_loss': valid_loss,
-        'steps': steps
+        'train_steps': train_loss_steps,
+        'valid_steps': valid_loss_steps
     }
 
 def parse_hyperparameters(folder_name):
@@ -91,9 +93,8 @@ def plot_learning_curves(curves, title="Learning Curves"):
     """
     plt.figure(figsize=(10, 6))
     for curve in curves:
-        params_str = ', '.join([f"{k}={v}" for k, v in curve.items() if k not in ['train_loss', 'valid_loss', 'steps']])
-        plt.plot(curve['steps'], curve['train_loss'], label=f"Train ({params_str})", linestyle='-')
-        plt.plot(curve['steps'], curve['valid_loss'], label=f"Validation ({params_str})", linestyle='--')
+        plt.plot(curve['train_steps'], curve['train_loss'], label=f"Train", linestyle='-')
+        plt.plot(curve['valid_steps'], curve['valid_loss'], label=f"Validation", linestyle='--')
 
     plt.xlabel("Steps")
     plt.ylabel("Loss")
@@ -108,7 +109,7 @@ if __name__ == "__main__":
     # List of directories containing TensorBoard logs
     log_folders = []
     
-    working_conf = Config(Path('RT_flood/check_loss_config.yaml'))
+    working_conf = Config(Path('RT_flood/configs/base_config.yaml'))
     last_run_path = Path('runs', working_conf.experiment_name, get_last_run(working_conf))
     log_folders.append(last_run_path)
     print(log_folders)
