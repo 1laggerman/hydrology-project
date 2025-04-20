@@ -3,7 +3,7 @@ from tensorboard.backend.event_processing.event_accumulator import EventAccumula
 import re
 from pathlib import Path
 import matplotlib.pyplot as plt
-from utils.configs import get_last_run
+from utils.configs import get_last_run, get_working_config
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 
 def process_tensorboard_folders(folders: list[Path]):
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # List of directories containing TensorBoard logs
     log_folders = []
     
-    working_conf = Config(Path('RT_flood/configs/base_config.yaml'))
+    working_conf = get_working_config()
     last_run_path = Path('runs', working_conf.experiment_name, get_last_run(working_conf))
     log_folders.append(last_run_path)
     print(log_folders)

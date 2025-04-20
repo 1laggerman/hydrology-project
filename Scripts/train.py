@@ -1,12 +1,13 @@
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import LOGGER
-from pathlib import Path
 from models.trainers.MyBaseTrainer import MyBaseTrainer
+
+from utils.configs import get_working_config
 
 if __name__ == '__main__':
 
     gpu = 0
-    config = Config(Path('RT_flood/configs/base_config.yaml'))
+    config = get_working_config()
 
     # check if a GPU has been specified as command line argument. If yes, overwrite config
     if gpu is not None and gpu >= 0:

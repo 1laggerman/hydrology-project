@@ -1,7 +1,3 @@
-from utils import *
+from utils.configs import *
 
-import sys
-import os
-print(sys.path)
-print()
-print(os.path.abspath(os.path.dirname(__file__)))
+get_working_config()

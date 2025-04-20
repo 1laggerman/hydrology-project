@@ -7,6 +7,7 @@ import yaml
 from nhWrap.neuralhydrology.neuralhydrology import nh_run
 from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer
+from dotenv import load_dotenv
 
 def build_basins_config(src_path, dst_path):
 
@@ -193,3 +194,15 @@ def generate_basins_txt(selector: dict, src_path, dst_path):
     with open(dst_path, 'w') as f:
         for basin in basins:
             f.write(basin + '\n')
+
+def get_working_config_path():
+    if (not load_dotenv(".env")):
+        raise Exception('Could not load .env file')
+    if (os.getenv('working_config_path') is None or os.getenv('working_config_name') is None):
+        raise Exception('Env doesnt contain the required variables: working_config_path, working_config_name')
+    cfg_path = os.getenv('working_config_path')
+    cfg_name = os.getenv('working_config_name')
+    return Path(cfg_path, cfg_name)
+
+def get_working_config():
+    return Config(get_working_config_path())

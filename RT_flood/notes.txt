@@ -1,5 +1,2 @@
 1. baseline error:
     - validation formula: avg(single_basin_total_loss)
-
-
-
