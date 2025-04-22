@@ -2,23 +2,23 @@ import pickle
 from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
+import nhWrap
 from nhWrap.neuralhydrology.neuralhydrology.evaluation import metrics, get_tester
-from nhWrap.neuralhydrology.neuralhydrology.nh_run import start_run
-from nhWrap.neuralhydrology.neuralhydrology.utils.config import Config
-from utils.configs import get_last_run_config, get_working_config_path
+from utils.configs import get_last_run_config, get_working_config
 import xarray
 from datetime import datetime
 
 
 def main():
-    # run_dir = Path(
-    #     "runs/HPC_training_zscore_norm_hidden_size256_batch_size512_learning_rate0001_2812_002447")
-    run_config = get_last_run_config(get_working_config_path())
+    run_config = get_last_run_config(get_working_config(), full=False)
     run_dir = run_config.run_dir
 
     data_dir = run_config.data_dir
 
-    max_events_path = (r"C:\PhD\Python\neuralhydrology-neuralhydrology-e4329c3" r"\neuralhydrology\max_event_dates.csv")
+    max_events_path = 'RT_flood/flood_times.csv'
+    max_event_per_basin = pd.read_csv(max_events_path)
+    max_event_per_basin = max_event_per_basin.set_index("basin")
+
     # create a tester instance and start evaluation
     tester = get_tester(cfg=run_config, run_dir=run_config.run_dir, period="test", init_model=True)
     results = tester.evaluate(save_results=False, metrics=run_config.metrics)
@@ -34,9 +34,6 @@ def main():
     # normalization = 'no_norm'
 
     norm_dict = pickle.load(open(data_dir / r"timeseries\netcdf\il\normalization_dict.pkl", "rb"))
-
-    max_event_per_basin = pd.read_csv(max_events_path)
-    max_event_per_basin = max_event_per_basin.set_index("basin")
 
     # create a "test figures" folder in the run directory:
     test_figures_dir = run_dir / "test_figures_unnormalized"

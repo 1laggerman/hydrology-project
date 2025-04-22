@@ -5,14 +5,19 @@ import sys
 import torch
 import logging
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer
+from nhWrap.neuralhydrology.neuralhydrology.training import loss
 
 LOGGER = logging.getLogger(__name__)
 
 from utils.configs import add_run_config
+from trainers.customFlood_loss import get_loss_obj
 
 class MyBaseTrainer(BaseTrainer):
     def __init__(self, cfg):
         super().__init__(cfg)
+
+    def _get_loss_obj(self) -> loss.BaseLoss:
+        return get_loss_obj(cfg=self.cfg)
 
     def _create_folder_structure(self):
         # create as subdirectory within run directory of base run
@@ -38,7 +43,7 @@ class MyBaseTrainer(BaseTrainer):
             if self.cfg.run_dir is None:
                 self.cfg.run_dir = Path().cwd() / "runs" / self.cfg.experiment_name / run_name
             else:
-                self.cfg.run_dir = self.cfg.run_dir / run_name
+                self.cfg.run_dir = self.cfg.run_dir / self.cfg.experiment_name / run_name
 
         # create folder + necessary subfolder
         if not self.cfg.run_dir.is_dir():

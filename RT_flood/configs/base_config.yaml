@@ -107,7 +107,7 @@ validation_end_date: 30/05/2017
 validate_every: 5
 validate_n_random_basins: 0
 
-test_basin_file: RT_flood/basins/all_il_basins.txt
+test_basin_file: RT_flood/basins/flood_basins.txt
 test_start_date: 01/10/2017
 test_end_date: 30/05/2018
 

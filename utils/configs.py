@@ -109,6 +109,10 @@ def build_save_config(config: Config):
             saved_conf[key] = str(val).replace('\\', '/')            
         elif isinstance(val, pd.Timestamp):
             saved_conf[key] = val.strftime('%d/%m/%Y')
+        elif isinstance(val, list) and isinstance(val[0], Path):
+            saved_conf[key] = [str(x).replace('\\', '/') for x in val]
+        elif isinstance(val, list) and isinstance(val[0], pd.Timestamp):
+            saved_conf[key] = [x.strftime('%d/%m/%Y') for x in val]
     
     return saved_conf
 
@@ -176,10 +180,12 @@ def add_run_config(cfg: Config, mode: Literal['full', 'organized', None] = 'full
     os.makedirs(str(configs_path), exist_ok=True)
     save_config(str(configs_path), 'run_config', create_run_config(cfg, strip=True, layout_basins=mode), overwrite=False)
 
-def get_last_run_config(config: Config):
+def get_last_run_config(config: Config, full: bool = False):
     folder = get_last_run(config)
-    print(Path(config.run_dir, folder, 'run_config.yaml'))
-    return Config(Path(config.run_dir, folder, 'run_config.yaml'))
+    config_path = Path(config.run_dir, folder)
+    if full:
+        return Config(config_path / 'full_configs' / 'run_config.yaml')
+    return Config(Path(config.run_dir, folder, 'config.yml'))
 
 def generate_basins_txt(selector: dict, src_path, dst_path):
     
