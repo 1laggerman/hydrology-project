@@ -4,6 +4,8 @@ from models.trainers.MyBaseTrainer import MyBaseTrainer
 
 from utils.configs import get_working_config
 
+import shutil
+
 if __name__ == '__main__':
 
     gpu = 0
@@ -48,4 +50,5 @@ if __name__ == '__main__':
 
     trainer.train_and_validate()
 
-
+results_dir = str(trainer.cfg.run_dir).replace("runs", "results")
+shutil.copytree(str(trainer.cfg.run_dir), results_dir)

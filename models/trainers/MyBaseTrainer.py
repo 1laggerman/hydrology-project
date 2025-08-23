@@ -1,9 +1,11 @@
 from datetime import datetime
 from pathlib import Path
 from tqdm import tqdm
+import shutil
 import sys
 import torch
 import logging
+
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer
 from nhWrap.neuralhydrology.neuralhydrology.training import loss
 
@@ -100,3 +102,6 @@ class MyBaseTrainer(BaseTrainer):
             pbar.set_postfix_str(f"Loss: {loss.item():.4f}")
 
             self.experiment_logger.log_step(**{k: v.item() for k, v in all_losses.items()})
+
+    def train_and_validate(self):
+        super().train_and_validate()

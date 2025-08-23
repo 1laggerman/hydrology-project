@@ -65,7 +65,7 @@ def map_state_dict(target_state_dict, source_state_dict):
 
 def get_last_run(config: Config):
     if config.run_dir is None:
-        config.run_dir = Path('runs', config.experiment_name)
+        config.run_dir = Path('results', config.experiment_name)
         
     main_directory = str(config.run_dir)
     # List all directories in the main directory
