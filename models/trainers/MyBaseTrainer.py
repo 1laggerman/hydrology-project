@@ -10,7 +10,7 @@ from nhWrap.neuralhydrology.neuralhydrology.training import loss
 LOGGER = logging.getLogger(__name__)
 
 from utils.configs import add_run_config
-from trainers.customFlood_loss import get_loss_obj
+from models.trainers.customFlood_loss import get_loss_obj
 
 class MyBaseTrainer(BaseTrainer):
     def __init__(self, cfg):

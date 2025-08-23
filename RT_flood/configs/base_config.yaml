@@ -83,7 +83,7 @@ target_variables:
 
 use_basin_id_encoding: false
 
-train_basin_file: RT_flood/basins/all_il_basins.txt
+train_basin_file: RT_flood/basins/test_basins.txt
 train_start_date:
 - 01/10/2010
 - 01/10/2011
