@@ -22,6 +22,11 @@ autoregressive_inputs:
 clip_targets_to_zero:
 - Flow_m3_sec
 
+custom_normalization:
+  Flow_m3_sec:
+    centering: min
+    scaling: mean
+
 lagged_features:
   Flow_m3_sec:
   - 18
@@ -42,7 +47,7 @@ model: arlstm
 seq_length: 32
 head: regression
 optimizer: Adam
-loss: MSE
+loss: WMSE
 metrics:
 - MSE
 epochs: 30

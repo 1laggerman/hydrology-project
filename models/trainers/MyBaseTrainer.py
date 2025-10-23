@@ -72,7 +72,7 @@ class MyBaseTrainer(BaseTrainer):
         # process bar handle
         n_iter = min(self._max_updates_per_epoch, len(self.loader)) if self._max_updates_per_epoch is not None else None
         pbar = tqdm(self.loader, file=sys.stdout, disable=self._disable_pbar, total=n_iter)
-        pbar.set_description(f'# Epoch {0}')
+        pbar.set_description(f'# Epoch 0')
 
         # Iterate in batches over training set
         nan_count = 0
