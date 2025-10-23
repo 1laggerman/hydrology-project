@@ -25,6 +25,9 @@ class MaskedWeightedMSELoss(BaseLoss):
     def _get_loss(self, prediction: Dict[str, torch.Tensor], ground_truth: Dict[str, torch.Tensor], **kwargs):
         mask = ~torch.isnan(ground_truth['y'])
         loss = 0.5 * torch.mean(ground_truth['y'][mask] * (prediction['y_hat'][mask] - ground_truth['y'][mask])**2)
+        if torch.any(ground_truth["y"][mask] < 0):
+            print("negative value encountered")
+            exit(1)
         return loss
     
 def get_loss_obj(cfg: Config) -> loss.BaseLoss:

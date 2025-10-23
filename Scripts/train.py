@@ -50,5 +50,5 @@ if __name__ == '__main__':
 
     trainer.train_and_validate()
 
-results_dir = str(trainer.cfg.run_dir).replace("runs", "results")
-shutil.copytree(str(trainer.cfg.run_dir), results_dir)
+# results_dir = str(trainer.cfg.run_dir).replace("runs", "results")
+# shutil.copytree(str(trainer.cfg.run_dir), results_dir)

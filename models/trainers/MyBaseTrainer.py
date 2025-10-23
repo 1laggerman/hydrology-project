@@ -9,10 +9,13 @@ import logging
 from nhWrap.neuralhydrology.neuralhydrology.training.basetrainer import BaseTrainer
 from nhWrap.neuralhydrology.neuralhydrology.training import loss
 
+from nhWrap.neuralhydrology.neuralhydrology.evaluation.tester import BaseTester
+
 LOGGER = logging.getLogger(__name__)
 
 from utils.configs import add_run_config
 from models.trainers.customFlood_loss import get_loss_obj
+from models.trainers.cutomFlood_tester import get_tester
 
 class MyBaseTrainer(BaseTrainer):
     def __init__(self, cfg):
@@ -20,6 +23,9 @@ class MyBaseTrainer(BaseTrainer):
 
     def _get_loss_obj(self) -> loss.BaseLoss:
         return get_loss_obj(cfg=self.cfg)
+    
+    def _get_tester(self) -> BaseTester:
+        return get_tester(cfg=self.cfg, run_dir=self.cfg.run_dir, period="validation", init_model=False)
 
     def _create_folder_structure(self):
         # create as subdirectory within run directory of base run
